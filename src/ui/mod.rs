@@ -23,7 +23,7 @@ impl PomodoroUi {
         }
     }
 
-    pub fn view(&self) -> Element<app::Message> {
+    pub fn view(&self) -> Element<'_, app::Message> {
         let setup_button = button("Setup").on_press(app::Message::UiUpdate(Message::ChangeView(
             views::View::Setup,
         )));

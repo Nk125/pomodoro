@@ -6,7 +6,7 @@ use iced::widget::{column, text};
 pub struct TimersView;
 
 impl TimersView {
-    pub fn view(&self) -> Element<app::Message> {
+    pub fn view(&self) -> Element<'_, app::Message> {
         column![text!("Timers view")].into()
     }
 }
