@@ -99,7 +99,7 @@ impl Pomodoro {
 
     /// Returns the UI view corresponding to the current state.
     pub fn view(&self) -> Element<'_, Message> {
-        self.ui.view().into()
+        self.ui.view()
     }
 
     /// Processes incoming messages and updates the pomodoro state accordingly.
