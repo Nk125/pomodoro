@@ -4,7 +4,7 @@ use crate::{app::*, timer};
 fn setup_settings() {
     let mut pomodoro = Pomodoro::default();
 
-    let timer_state = pomodoro.get_timer_state();
+    let timer_state = pomodoro.timer_state();
 
     assert_eq!(timer_state.time_to_study, 0);
     assert_eq!(timer_state.time_to_relax, 0);
@@ -16,7 +16,7 @@ fn setup_settings() {
 
     pomodoro.update(Message::Setup(new_settings));
 
-    assert_eq!(pomodoro.get_timer_state(), new_settings);
+    assert_eq!(pomodoro.timer_state(), new_settings);
 }
 
 #[test]
@@ -30,7 +30,7 @@ fn timer_underflow() {
 
     pomodoro.update(Message::Tick);
 
-    assert_eq!(pomodoro.get_timer_state(), zero_timer_state);
+    assert_eq!(pomodoro.timer_state(), zero_timer_state);
 }
 
 #[test]
@@ -44,11 +44,11 @@ fn timer_reset() {
 
     pomodoro.update(Message::Tick);
 
-    assert_ne!(pomodoro.get_timer_state(), arbitrary_timer_settings);
+    assert_ne!(pomodoro.timer_state(), arbitrary_timer_settings);
 
     pomodoro.update(Message::Reset);
 
-    assert_eq!(pomodoro.get_timer_state(), arbitrary_timer_settings);
+    assert_eq!(pomodoro.timer_state(), arbitrary_timer_settings);
 }
 
 #[test]
@@ -60,12 +60,12 @@ fn timer_finish() {
     .into();
 
     // Since both timers are still running, then study time hasn't finished yet
-    assert_eq!(pomodoro.get_timer_state().state(), timer::State::StudyTime);
+    assert_eq!(pomodoro.timer_state().state(), timer::State::StudyTime);
 
     // Time to study finishes
     pomodoro.update(Message::Tick);
 
-    let last_timer_state = pomodoro.get_timer_state();
+    let last_timer_state = pomodoro.timer_state();
 
     assert_eq!(last_timer_state.time_to_study, 0);
 
@@ -75,7 +75,7 @@ fn timer_finish() {
     pomodoro.update(Message::Tick);
 
     // Both study and relax timers should be finished
-    let last_timer_state = pomodoro.get_timer_state();
+    let last_timer_state = pomodoro.timer_state();
 
     assert_eq!(last_timer_state.time_to_relax, 0);
 
