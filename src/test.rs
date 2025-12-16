@@ -16,7 +16,7 @@ fn setup_settings() {
 
     pomodoro.update(Message::Setup(new_settings));
 
-    assert_eq!(pomodoro.timer_state(), new_settings);
+    assert_eq!(pomodoro.timer_state(), &new_settings);
 }
 
 #[test]
@@ -30,7 +30,7 @@ fn timer_underflow() {
 
     pomodoro.update(Message::Tick);
 
-    assert_eq!(pomodoro.timer_state(), zero_timer_state);
+    assert_eq!(pomodoro.timer_state(), &zero_timer_state);
 }
 
 #[test]
@@ -44,11 +44,11 @@ fn timer_reset() {
 
     pomodoro.update(Message::Tick);
 
-    assert_ne!(pomodoro.timer_state(), arbitrary_timer_settings);
+    assert_ne!(pomodoro.timer_state(), &arbitrary_timer_settings);
 
     pomodoro.update(Message::Reset);
 
-    assert_eq!(pomodoro.timer_state(), arbitrary_timer_settings);
+    assert_eq!(pomodoro.timer_state(), &arbitrary_timer_settings);
 }
 
 #[test]

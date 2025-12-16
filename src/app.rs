@@ -85,21 +85,22 @@ impl Pomodoro {
 
     /// Returns the current active state of the timer.
     #[must_use]
-    pub fn timer_state(&self) -> timer::Settings {
-        self.timer_state
+    pub fn timer_state(&self) -> &timer::Settings {
+        &self.timer_state
     }
 
     /// Returns the initial timer configuration.
     #[must_use]
-    pub fn timer_config(&self) -> timer::Settings {
-        self.timer_settings
+    pub fn timer_config(&self) -> &timer::Settings {
+        &self.timer_settings
     }
 
     // == UI Integration ==
 
     /// Returns the UI view corresponding to the current state.
-    pub fn view(&self) -> Element<'_, Message> {
-        self.ui.view()
+    pub fn view<'v>(&'v self) -> Element<'v, Message> {
+        self.ui.view(self.timer_config())
+        //.explain(iced::Color::from_rgb8(255, 0, 0))
     }
 
     /// Processes incoming messages and updates the pomodoro state accordingly.

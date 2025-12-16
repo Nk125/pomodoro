@@ -1,7 +1,8 @@
 mod views;
 
-use crate::app;
+use crate::{app, timer};
 use iced::Element;
+use iced::alignment::Horizontal;
 use iced::widget::{button, column, row};
 
 #[derive(Default)]
@@ -23,7 +24,10 @@ impl PomodoroUi {
         }
     }
 
-    pub fn view(&self) -> Element<'_, app::Message> {
+    pub fn view<'view>(
+        &'view self,
+        settings: &'view timer::Settings,
+    ) -> Element<'view, app::Message> {
         let setup_button = button("Setup").on_press(app::Message::UiUpdate(Message::ChangeView(
             views::View::Setup,
         )));
@@ -33,7 +37,7 @@ impl PomodoroUi {
         )));
 
         let current_view_rendered = match self.current_view {
-            views::View::Setup => self.setup_view.view(),
+            views::View::Setup => self.setup_view.view(settings),
             views::View::Timers => self.timers_view.view(),
         };
 
@@ -41,6 +45,7 @@ impl PomodoroUi {
             row![setup_button, timers_button].spacing(20),
             current_view_rendered
         ]
+        .align_x(Horizontal::Center)
         .into()
     }
 }
