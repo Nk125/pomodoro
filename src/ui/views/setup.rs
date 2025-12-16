@@ -10,29 +10,37 @@ impl SetupView {
         &'view self,
         settings: &'view timer::Settings,
     ) -> Element<'view, app::Message> {
+        let display_study_time = match settings.time_to_study {
+            0 => "",
+            n => &n.to_string(),
+        };
+
+        let display_relax_time = match settings.time_to_relax {
+            0 => "",
+            n => &n.to_string(),
+        };
+
         column![
             row![
                 text("Study time (in seconds):"),
-                text_input("Enter time here...", &settings.time_to_study.to_string()).on_input(
-                    |new_timer| {
-                        app::Message::Setup(timer::Settings {
-                            time_to_study: new_timer
-                                .parse::<u64>()
-                                .unwrap_or(settings.time_to_study),
-                            ..*settings
-                        })
-                    }
-                )
+                text_input("Enter time here...", display_study_time).on_input(|new_timer| {
+                    app::Message::Setup(timer::Settings {
+                        time_to_study: crate::ui::num_input::num_input(
+                            settings.time_to_study,
+                            &new_timer,
+                        ),
+                        ..*settings
+                    })
+                })
             ],
             row![
                 text("Relax time (in seconds):"),
-                text_input(
-                    "Enter relax time here...",
-                    &settings.time_to_relax.to_string()
-                )
-                .on_input(|new_timer| {
+                text_input("Enter relax time here...", display_relax_time).on_input(|new_timer| {
                     app::Message::Setup(timer::Settings {
-                        time_to_relax: new_timer.parse::<u64>().unwrap_or(settings.time_to_relax),
+                        time_to_relax: crate::ui::num_input::num_input(
+                            settings.time_to_relax,
+                            &new_timer,
+                        ),
                         ..*settings
                     })
                 })

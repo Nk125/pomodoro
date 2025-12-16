@@ -1,3 +1,4 @@
+mod num_input;
 mod views;
 
 use crate::{app, timer};
