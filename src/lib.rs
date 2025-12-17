@@ -1,4 +1,5 @@
 pub mod app;
+pub mod clock;
 mod timer;
 pub mod ui;
 

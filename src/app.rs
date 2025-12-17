@@ -13,6 +13,9 @@ pub struct Pomodoro {
 
     /// UI manager for rendering and handling interface updates.
     ui: ui::PomodoroUi,
+
+    /// Determines if clock should tick the timer_state or not.
+    running: bool,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -53,6 +56,21 @@ impl Pomodoro {
     /// Restores the active timer state to the initial configuration.
     fn reset_timer(&mut self) {
         self.timer_state = self.timer_settings;
+    }
+
+    /// Signals the clock to stop decreasing the timers.
+    fn stop_timer(&mut self) {
+        self.running = false;
+    }
+
+    /// Signals the clock to start ticking again.
+    fn start_timer(&mut self) {
+        self.running = true;
+    }
+
+    #[must_use]
+    pub fn is_running(&self) -> bool {
+        self.running
     }
 
     /// Decrements the given counter by one second.

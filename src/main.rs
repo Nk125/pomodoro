@@ -1,5 +1,5 @@
 use env_logger::Env;
-use pomodoro::app;
+use pomodoro::{app, clock};
 
 fn main() -> iced::Result {
     env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
@@ -9,6 +9,7 @@ fn main() -> iced::Result {
         app::Pomodoro::update,
         app::Pomodoro::view,
     )
+    .subscription(clock::ticker)
     .antialiasing(true)
     .run()
 }
